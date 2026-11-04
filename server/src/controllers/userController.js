@@ -1,0 +1,6 @@
+const User = require('../models/user');
+const Post = require('../models/post');
+const safeUser = require('./authController').safeUser;
+exports.get = async (req, res, next) => { try { const user = await User.findById(req.params.id); if (!user) return res.status(404).json({ message: 'Writer not found' }); const posts = await Post.find({ author: user._id, status: 'published' }).sort({ createdAt: -1 }); const profile = safeUser(user); delete profile.email; res.json({ user: profile, posts }); } catch (err) { next(err); } };
+exports.update = async (req, res, next) => { try { for (const key of ['name', 'bio', 'avatar', 'website', 'socials', 'theme', 'accent']) if (req.body[key] !== undefined) req.user[key] = req.body[key]; await req.user.save(); res.json({ user: safeUser(req.user) }); } catch (err) { next(err); } };
+exports.password = async (req, res, next) => { try { const user = await User.findById(req.user._id).select('+password'); if (!(await user.comparePassword(req.body.currentPassword || ''))) return res.status(400).json({ message: 'Current password is incorrect' }); if ((req.body.newPassword || '').length < 8) return res.status(400).json({ message: 'New password must be at least 8 characters' }); user.password = req.body.newPassword; await user.save(); res.json({ message: 'Password updated' }); } catch (err) { next(err); } };

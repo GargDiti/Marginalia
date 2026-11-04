@@ -1,0 +1,12 @@
+﻿const router = require('express').Router();
+const auth = require('../middleware/auth');
+const c = require('../controllers/postController');
+router.get('/', c.list);
+router.get('/mine', auth, c.mine);
+router.post('/', auth, c.create);
+router.get('/id/:id', auth, c.getMine);
+router.patch('/:id', auth, c.update);
+router.delete('/:id', auth, c.remove);
+router.post('/:id/like', auth, c.toggleLike);
+router.get('/:slug', c.getBySlug);
+module.exports = router;

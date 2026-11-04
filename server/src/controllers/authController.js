@@ -1,0 +1,7 @@
+﻿const User = require('../models/user');
+const { generateToken } = require('../utils/generateToken');
+const safeUser = (user) => ({ id: user._id, name: user.name, email: user.email, bio: user.bio, avatar: user.avatar, website: user.website, socials: user.socials, theme: user.theme, accent: user.accent });
+exports.register = async (req, res, next) => { try { const { name, email, password } = req.body; if (!name?.trim() || !/^\S+@\S+\.\S+$/.test(email || '') || (password || '').length < 8) return res.status(400).json({ message: 'Enter a name, valid email, and password with at least 8 characters.' }); if (await User.exists({ email: email.toLowerCase().trim() })) return res.status(409).json({ message: 'Email already registered' }); const user = await User.create({ name, email, password }); res.status(201).json({ token: generateToken(user._id), user: safeUser(user) }); } catch (err) { next(err); } };
+exports.login = async (req, res, next) => { try { const { email, password } = req.body; const user = await User.findOne({ email: (email || '').toLowerCase().trim() }).select('+password'); if (!user || !(await user.comparePassword(password || ''))) return res.status(401).json({ message: 'Invalid email or password' }); res.json({ token: generateToken(user._id), user: safeUser(user) }); } catch (err) { next(err); } };
+exports.me = async (req, res) => res.json({ user: safeUser(req.user) });
+exports.safeUser = safeUser;

@@ -1,0 +1,11 @@
+const router = require('express').Router();
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+const auth = require('../middleware/auth');
+const directory = path.resolve(__dirname, '../../uploads');
+fs.mkdirSync(directory, { recursive: true });
+const storage = multer.diskStorage({ destination: directory, filename: (req, file, done) => done(null, `${Date.now()}-${Math.random().toString(36).slice(2)}${({ 'image/jpeg': '.jpg', 'image/png': '.png', 'image/webp': '.webp', 'image/gif': '.gif' }[file.mimetype])}`) });
+const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 }, fileFilter: (req, file, done) => ['image/jpeg', 'image/png', 'image/webp', 'image/gif'].includes(file.mimetype) ? done(null, true) : done(new Error('Upload a JPEG, PNG, WebP, or GIF image')) });
+router.post('/', auth, upload.single('image'), (req, res) => { if (!req.file) return res.status(400).json({ message: 'Choose an image to upload' }); res.status(201).json({ url: `/uploads/${req.file.filename}` }); });
+module.exports = router;

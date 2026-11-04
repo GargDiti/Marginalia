@@ -1,0 +1,4 @@
+const mongoose = require('mongoose');
+const postSchema = new mongoose.Schema({ title: { type: String, required: true, trim: true, maxlength: 180 }, slug: { type: String, unique: true, index: true }, content: { type: String, default: '' }, excerpt: { type: String, maxlength: 400, default: '' }, coverImage: { type: String, default: '' }, tags: [{ type: String, trim: true, lowercase: true }], status: { type: String, enum: ['draft', 'published'], default: 'draft' }, author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, views: { type: Number, default: 0 }, likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] }, { timestamps: true });
+postSchema.index({ title: 'text', content: 'text', excerpt: 'text', tags: 'text' });
+module.exports = mongoose.model('Post', postSchema);
