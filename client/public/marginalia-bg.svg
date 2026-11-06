@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" fill="none">
+  <defs>
+    <linearGradient id="paper" x1="120" y1="80" x2="1700" y2="1050" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FBF8F2"/>
+      <stop offset=".55" stop-color="#FBF1E9"/>
+      <stop offset="1" stop-color="#F5D8C5"/>
+    </linearGradient>
+    <radialGradient id="glowA" cx="0" cy="0" r="1" gradientTransform="matrix(490 215 -210 478 1470 340)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F3A16C" stop-opacity=".3"/>
+      <stop offset="1" stop-color="#F3A16C" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowB" cx="0" cy="0" r="1" gradientTransform="matrix(380 190 -180 360 350 890)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EFA277" stop-opacity=".19"/>
+      <stop offset="1" stop-color="#EFA277" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="blur" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="34"/>
+    </filter>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".78" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="table" tableValues="0 .09"/></feComponentTransfer>
+      <feBlend in="SourceGraphic" mode="soft-light"/>
+    </filter>
+  </defs>
+  <path fill="url(#paper)" d="M0 0h1920v1080H0z"/>
+  <g filter="url(#blur)"><path fill="url(#glowA)" d="M0 0h1920v1080H0z"/><path fill="url(#glowB)" d="M0 0h1920v1080H0z"/></g>
+  <path fill="#fff" fill-opacity=".22" filter="url(#grain)" d="M0 0h1920v1080H0z"/>
+</svg>
