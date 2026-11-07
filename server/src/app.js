@@ -13,7 +13,10 @@ const app = express();
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cors({ origin: process.env.CLIENT_URL?.split(',') || true }));
 app.use(express.json({ limit: '2mb' }));
-app.use('/uploads', express.static(require('path').join(__dirname, '../uploads')));
+app.use('/uploads', (req, res, next) => {
+  res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+  next();
+}, express.static(require('path').join(__dirname, '../uploads')));
 app.use('/api/auth', rateLimit({ windowMs: 15 * 60 * 1000, limit: 30, standardHeaders: true, legacyHeaders: false }), authRoutes);
 app.get('/api/health', (req, res) => { const connected = mongoose.connection.readyState === 1; res.status(connected ? 200 : 503).json({ status: connected ? 'ok' : 'database_disconnected', database: connected ? 'connected' : 'disconnected' }); });
 app.use('/api/posts', postRoutes);
