@@ -30,8 +30,8 @@ blogging_platform/
 
 1. Install MongoDB locally or create a MongoDB Atlas database.
 2. Copy `server/.env.example` to `server/.env`. Set `MONGO_URI` and replace `JWT_SECRET` with a long random value. Set `CLIENT_URL` to the client origin if it differs from `http://localhost:5173`.
-3. In `server/`, run `npm install` and then `npm run dev`. The API listens on port 5000 by default.
-4. Copy `client/.env.example` to `client/.env` if the API isn't at `http://localhost:5000/api`.
+3. In `server/`, run `npm install` and then `npm run dev`. The API listens on port 3000 by default.
+4. Copy `client/.env.example` to `client/.env` if the API isn't at `http://localhost:3000/api`.
 5. In `client/`, run `npm install` and `npm run dev`. Open the Vite URL, usually `http://localhost:5173`.
 
 The API health check is `GET /api/health`. Uploaded images are stored in `server/uploads/` and served under `/uploads/`.

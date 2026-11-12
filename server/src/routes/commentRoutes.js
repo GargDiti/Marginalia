@@ -1,4 +1,4 @@
-﻿const router = require('express').Router();
+const router = require('express').Router({ mergeParams: true });
 const auth = require('../middleware/auth');
 const c = require('../controllers/commentController');
 router.get('/', c.list);
